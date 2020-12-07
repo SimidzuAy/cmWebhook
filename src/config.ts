@@ -1,12 +1,13 @@
 import {readFileSync} from 'fs'
 
 interface ICfg {
-    token: {
-        vk: string
-        cm: string
-    }
+    cm: string
+    vks: {
+        token: string
+        chats: {[key: string]: number}
+    }[]
 }
 
-const cfg: ICfg = JSON.parse(String(readFileSync('../config/main.json')))
+const cfg: ICfg = JSON.parse(String(readFileSync(`${__dirname}/../config/main.json`)))
 
 export default cfg
