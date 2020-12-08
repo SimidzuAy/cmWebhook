@@ -2,6 +2,7 @@ import {readFileSync} from 'fs'
 
 interface ICfg {
     cm: string
+    visibleMessagesCount: number
     vks: {
         token: string
         chats: {[key: string]: number}

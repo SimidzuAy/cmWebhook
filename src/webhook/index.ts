@@ -1,7 +1,7 @@
 import {VK} from 'vk-io'
 import express from 'express'
 import bodyParser from 'body-parser'
-import {confirm, invite, photoUpdate} from './handlers'
+import {confirm, deleteForAll, invite, photoUpdate} from './handlers'
 
 const app = express()
 
@@ -9,17 +9,25 @@ export const main = async (VKS: VK[]) => {
 
     const mainUserId = (await VKS[0].api.users.get({}))[0].id
 
-    app.all('/', bodyParser.json(), (req, res) => {
+    app.all('/', bodyParser.json(), async (req, res) => {
         if ( req.body.type ) {
-            switch (req.body.type) {
-                case 'confirm':
-                    return confirm(req.body, res, mainUserId)
-                case 'invite':
-                    invite(req.body.data, res, VKS)
-                    break
-                case 'photo_update':
-                    photoUpdate(req.body.data, VKS)
-            }
+            try {
+                switch (req.body.type) {
+                    case 'confirm':
+                        return await confirm(req.body, res, mainUserId)
+                    case 'invite':
+                        await invite(req.body.data, VKS)
+                        break
+                    case 'photo_update':
+                        await photoUpdate(req.body.data, VKS)
+                        break
+                    case 'ban_expired':
+                        await invite(req.body.data, VKS)
+                        break
+                    case 'delete_for_all':
+                        await deleteForAll(req.body.data, VKS)
+                }
+            } catch ( ignored ) {}
         }
 
         res.send('ok')
