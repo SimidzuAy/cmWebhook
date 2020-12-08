@@ -1,7 +1,7 @@
 import {Response} from 'express'
 import cfg from '../config'
 import {Md5} from 'ts-md5/dist/md5';
-import {IConfirm, IInvite} from './types'
+import {IConfirm, IInvite, IPhotoUpdate} from './types'
 import {VK} from 'vk-io'
 import {FriendsGetResponse} from 'vk-io/lib/api/schemas/responses'
 
@@ -59,4 +59,19 @@ export const invite = async (data: IInvite, res: Response, VKS: VK[]) => {
     ])
 
 
+}
+
+export const photoUpdate = async ( data: IPhotoUpdate, VKS: VK[] ) => {
+    try {
+        await VKS[0].upload.chatPhoto({
+            chat_id: cfg.vks[0].chats[data.chat],
+            source: {
+                value: Buffer.from(data.photo, 'base64'),
+                contentType: 'image/jpeg'
+            },
+        })
+    } catch (ignored) {
+        console.error(ignored)
+        return
+    }
 }

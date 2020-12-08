@@ -6,7 +6,10 @@ const VKS: VK[] = []
 
 cfg.vks.forEach(vk => {
     VKS.push(new VK({
-        token: vk.token
+        token: vk.token,
+
+        // Слава Украине
+        apiBaseUrl: 'https://vk-api-proxy.xtrafrancyz.net/method'
     }))
 })
 
