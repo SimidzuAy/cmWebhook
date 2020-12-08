@@ -29,3 +29,19 @@ export const getUserByFriend = async ( userId: number, VKS: VK[] ) => {
 
     return whoFind
 }
+
+
+export const getMessageIdsByConversationIds = async ( conversationIds: number[] | number, chatId: number, VKS: VK[] ) => {
+    const messages = await VKS[0].api.messages.getByConversationMessageId({
+        conversation_message_ids: conversationIds,
+        peer_id: chatId + 2000000000
+    })
+
+    const messageIds: number[] = []
+
+    messages.items.forEach(message => {
+        messageIds.push(message.id)
+    })
+
+    return messageIds
+}

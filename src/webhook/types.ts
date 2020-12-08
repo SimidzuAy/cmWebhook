@@ -18,3 +18,7 @@ export interface IPhotoUpdate extends IDefault{
 export interface IDeleteForAll extends IDefault{
     conversation_message_ids: number[]
 }
+
+export interface IPin extends IDefault {
+    conversation_message_id: number
+}

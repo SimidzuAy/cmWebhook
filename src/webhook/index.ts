@@ -1,7 +1,7 @@
 import {VK} from 'vk-io'
 import express from 'express'
 import bodyParser from 'body-parser'
-import {confirm, deleteForAll, invite, photoUpdate} from './handlers'
+import {confirm, deleteForAll, invite, messagePin, photoUpdate} from './handlers'
 
 const app = express()
 
@@ -26,6 +26,10 @@ export const main = async (VKS: VK[]) => {
                         break
                     case 'delete_for_all':
                         await deleteForAll(req.body.data, VKS)
+                        break
+                    // Чм оказывается и сам уже может....
+                    case 'message_pin':
+                        await messagePin(req.body.data, VKS)
                 }
             } catch ( ignored ) {}
         }
