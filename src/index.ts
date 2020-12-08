@@ -7,9 +7,7 @@ const VKS: VK[] = []
 cfg.vks.forEach(vk => {
     VKS.push(new VK({
         token: vk.token,
-
-        // Слава Украине
-        apiBaseUrl: 'https://vk-api-proxy.xtrafrancyz.net/method'
+        apiBaseUrl:  cfg.isProxy ? 'https://vk-api-proxy.xtrafrancyz.net/method' : 'https://api.vk.com/method'
     }))
 })
 

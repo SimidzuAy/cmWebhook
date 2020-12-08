@@ -2,6 +2,7 @@ import {readFileSync} from 'fs'
 
 interface ICfg {
     cm: string
+    isProxy: boolean
     visibleMessagesCount: number
     vks: {
         token: string
