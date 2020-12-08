@@ -1,13 +1,15 @@
 import {readFileSync} from 'fs'
 
-interface ICfg {
+export interface IVK {
+    token: string
+    chats: {[key: string]: number}
+}
+
+export interface ICfg {
     cm: string
     isProxy: boolean
     visibleMessagesCount: number
-    vks: {
-        token: string
-        chats: {[key: string]: number}
-    }[]
+    vks: IVK[]
 }
 
 const cfg: ICfg = JSON.parse(String(readFileSync(`${__dirname}/../config/main.json`)))

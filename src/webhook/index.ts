@@ -1,28 +1,29 @@
-import {VK} from 'vk-io'
 import express from 'express'
 import bodyParser from 'body-parser'
 import {confirm, deleteForAll, invite, messagePin, photoUpdate} from './handlers'
+import {ICfg} from '../config'
+import {IWHUsers} from '../types'
 
 const app = express()
 
-export const main = async (VKS: VK[]) => {
+export const main = async (VKS: IWHUsers[], cfg: ICfg) => {
 
-    const mainUserId = (await VKS[0].api.users.get({}))[0].id
+    const mainUserId = (await VKS[0].vk.api.users.get({}))[0].id
 
     app.all('/', bodyParser.json(), async (req, res) => {
         if ( req.body.type ) {
             try {
                 switch (req.body.type) {
                     case 'confirm':
-                        return await confirm(req.body, res, mainUserId)
+                        return await confirm(req.body, res, mainUserId, cfg)
                     case 'invite':
-                        await invite(req.body.data, VKS)
+                        await invite(req.body.data, VKS, cfg)
                         break
                     case 'photo_update':
                         await photoUpdate(req.body.data, VKS)
                         break
                     case 'ban_expired':
-                        await invite(req.body.data, VKS)
+                        await invite(req.body.data, VKS, cfg)
                         break
                     case 'delete_for_all':
                         await deleteForAll(req.body.data, VKS)
@@ -31,7 +32,8 @@ export const main = async (VKS: VK[]) => {
                     case 'message_pin':
                         await messagePin(req.body.data, VKS)
                 }
-            } catch ( ignored ) {}
+            } catch ( ignored ) {
+            }
         }
 
         res.send('ok')
